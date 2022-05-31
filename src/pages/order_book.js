@@ -5,19 +5,53 @@ import { useState } from "react";
 
 
 function Dropdown(){
+
+  const [ordertype,setordertype] = useState('');
+  const [quantity,setquantity] = useState(null);
+  const [price,setprice] = useState(null);
+  const [type,settype] = useState(null)
+
+  function savedata(){
+
+
+    let data={ordertype,quantity,price,type}
+    fetch("http://localhost:3000/orders",{
+      method:'POST',
+      headers:{
+        'Accept' : 'application/json' ,
+        'Content-Type' : 'application/json'
+      },
+      body:JSON.stringify(data)
+    }).then((result)=>{
+      console.log(result);
+
+    })
+
+  }
+
+  function buy(){
+    settype('buy');
+    savedata();
+  }
+
+  function sell(){
+    settype('sell');
+    savedata();
+  }
+
   
   return(
-    <form action="order_book.html" target="_self" method="post" className="place_order_open_menu" id="menubox"  >
+    <form className="place_order_open_menu" id="menubox" >
                       <div className="place_order_open_menu_inputs">
-                        <select className="ordertype" required>
+                        <select value={ordertype} onChange={(e) => setordertype(e.target.value)} className="ordertype" required>
                           <option value disabled selected hidden>Order Type</option>
-                          <option value>Limit</option>
+                          <option value='Limit'>Limit</option>
                         </select>
-                        <input type="number" id="quantity" min={0} max step={1} placeholder="Quantity" required />
-                        <input type="number" id="price" onchange="setTwoNumberDecimal" min={0} max step="0.05" placeholder="Price" required />
+                        <input type="number" value={quantity} onChange={(e) => setquantity(e.target.value)} id="quantity" min={0} max step={1} placeholder="Quantity" required />
+                        <input type="number" value={price} onChange={(e) => setprice(e.target.value)} id="price"  min={0} max step="0.05" placeholder="Price" required />
                         <div className="place_order_open_menu_btn">
-                          <input type="submit" className="bs" defaultValue="Buy" onclick="confirmation()" />
-                          <input type="submit" className="bs" defaultValue="Sell" onclick="confirmation()" />
+                          <input type="submit" className="bs" defaultValue="Buy" onClick ={buy} />
+                          <input type="submit" className="bs" defaultValue="Sell" onClick ={sell} />
                           {/* <button type="submit" formaction="/action_one">First action</button>
                                 <button type="submit" formaction="/action_two">Second action</button>
                      */}
@@ -29,8 +63,6 @@ function Dropdown(){
 function PlaceOrder(props){
 
   const [open,setOpen] = useState(false);
-
-  
 
   return(
     <>
@@ -61,10 +93,11 @@ class Home extends React.Component {
                 <ul className="menu_items">
                   <form action target="_self" method="post">
                     <li className="item_1">
-                      <select className="symbol" id="symbols" required>
+                      {/* <select className="symbol" id="symbols" required>
                         <option value disabled selected hidden>Select a Symbol</option>
                         <option value={1}><API /></option>
-                      </select>
+                      </select> */}
+                      <API/>
                     </li>
                     <li className="item_2">
                       {/* <input type="submit" value=" View Order Book"> */}

@@ -17,15 +17,19 @@ useEffect(() => {
 },["localhost:9090/getsymbols"])
 
   return(
-    <div>
-      <ul>
-        {
+    
+      
+        
+          <select className="symbol" id="symbols" required>
+          <option value disabled selected hidden>Select a Symbol</option>
+          {
           symbols.map(symbols => (
-            <li>{symbols}</li>
+            <option value={symbols}>{symbols}</option>
           ))
-        }
-      </ul>
-    </div>
+          }
+          </select>
+      
+    
   )
 }
 
